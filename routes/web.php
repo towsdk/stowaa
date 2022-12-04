@@ -85,7 +85,10 @@ Route::get('/test',function(){
 
     $user = User::find(3);
     $user->assignRole($role);
-
-
-
 });
+
+    // Route::get( '/test', function(){
+    //     return User::all()->random()->id;
+    // });
+
+
