@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('category_id')->constrained();
             $table->string('sku_code')->unique();
             $table->text('short_description')->nullable();
             $table->decimal('price');

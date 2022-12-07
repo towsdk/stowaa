@@ -23,7 +23,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>Permission</h4>
-                <form action="{{ route('backend.permission.store') }}" method="POST">
+                <form action="{{ route('backend.role.permission.store') }}" method="POST">
                     @csrf
                     <input type="text" class="form-control" 
                     placeholder="Add Permission" name="name"
@@ -39,7 +39,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>Role</h4>
-                <form action="{{ route('backend.role.store') }}" method="POST">
+                <form action="{{ route('backend.role.permission.store') }}" method="POST">
                     @csrf
                     <div>
                         <input type="text" class="form-control mb-2" 

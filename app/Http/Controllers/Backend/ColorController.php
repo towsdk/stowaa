@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Color;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ColorController extends Controller
 {
@@ -15,18 +16,10 @@ class ColorController extends Controller
      */
     public function index()
     {
-        //
+        $colors = Color::all();
+        return view('backend.color.index', compact('colors'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,7 +29,16 @@ class ColorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'=> "required|unique:colors,name",
+        ]);
+
+        Color::create([
+            'name'=> $request->name,
+            'slug'=>Str::slug($request->name),
+        ]);
+
+        return back()->with('success', 'Product color has successfully added');
     }
 
     /**

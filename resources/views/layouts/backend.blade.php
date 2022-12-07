@@ -181,21 +181,34 @@
                                         <span class="ml-auto sidebar-menu-toggle-icon"></span>
                                     </a>
                                     <ul class="sidebar-submenu collapse" id="category_menu">
-                                        <li class="sidebar-menu-item">
-                                            <a class="sidebar-menu-button">
-                                                <span class="sidebar-menu-text">Product</span>
+                                        
+                                        <li class="sidebar-menu-item {{ Route::is('backend.product.index') ? 'active': '' }}">
+                                            <a class="sidebar-menu-button" href="{{ route('backend.product.create') }}">
+                                                <span class="sidebar-menu-text">Add Product</span>
                                             </a>
                                         </li>
-                                        <li class="sidebar-menu-item">
-                                            <a class="sidebar-menu-button">
-                                                <span class="sidebar-menu-text">Add Product</span>
+                                        <li class="sidebar-menu-item {{ Route::is('backend.product.index') ? 'active': '' }}">
+                                            <a class="sidebar-menu-button" href="{{ route('backend.category.index') }}">
+                                                <span class="sidebar-menu-text">All  Product</span>
                                             </a>
                                         </li>
                                         <li class="sidebar-menu-item {{ Route::is('backend.category.index') ? 'active': '' }}">
                                             <a class="sidebar-menu-button" href="{{ route('backend.category.index') }}">
-                                                <span class="sidebar-menu-text">Category</span>
+                                                <span class="sidebar-menu-text">Product Category</span>
                                             </a>
                                         </li>
+
+                                        <li class="sidebar-menu-item {{ Route::is('backend.color.index') ? 'active': '' }}">
+                                            <a class="sidebar-menu-button" href="{{ route('backend.color.index') }}">
+                                                <span class="sidebar-menu-text">Product Colors</span>
+                                            </a>
+                                        </li>
+                                        <li class="sidebar-menu-item {{ Route::is('backend.size.index') ? 'active': '' }}">
+                                            <a class="sidebar-menu-button" href="{{ route('backend.size.index') }}">
+                                                <span class="sidebar-menu-text">Product Sizes</span>
+                                            </a>
+                                        </li>
+                                    
                                     </ul>
                                 </li>
 
@@ -219,7 +232,7 @@
                                         @endcan
                                         @can('create role')
                                         <li class="sidebar-menu-item {{ Route::is('backend.role.create') ? 'active': '' }}">
-                                            <a class="sidebar-menu-button" href="{{ route('backend.role.index') }}">
+                                            <a class="sidebar-menu-button" href="{{ route('backend.role.create') }}">
                                                 <span class="sidebar-menu-text"> Create Role</span>
                                             </a>
                                         </li> 

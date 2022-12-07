@@ -9,4 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $guarded = [
+        'id',
+    ];
+
+    public function categories(){
+        return $this->belongsToMany(Category::class);
+    }
 }
