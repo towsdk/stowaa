@@ -1,7 +1,6 @@
 @extends('layouts.backend')
 @section('title', 'Category')
 @section('content')
-
 <div class="container-fluid page__heading-container">
     <div class="page__heading d-flex align-items-end">
         <div class="flex">
@@ -18,13 +17,14 @@
 </div>
 
 <div class="container-fluid page__container">
-  <div class="row">
+  <div class="row justify-content-center">
     <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
                         <h4>Category</h4>
                         <div class="card-body">
                             <table class="table">
+                               <thead>
                                 <tr>
                                     <th>Id</th>
                                     <th>Image</th>
@@ -34,14 +34,16 @@
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
-                                @forelse ($categories as $category)
+                               </thead>
+                                <tbody>
+                                    @forelse ($categories as $category)
                                     <tr>
                                         <td>{{ $category->id }}</td>
                                         <td>
                                             @if ($category->image)
                                             <img width="60" src="{{ asset('storage/category/'.$category->image) }}" alt={{ "$category->name" }}  >
                                             @else
-                                            <img  width="60"src="{{ asset('storage/category/cat.png') }}" alt={{ "$category->name" }}  > </td>
+                                            <img  width="60" src="{{ asset('storage/category/cat.png') }}" alt={{ "$category->name" }}  > </td>
                                         </td>
                                             @endif
                                             <td>{{ $category->name }}</td>
@@ -57,39 +59,41 @@
                                         <td colspan="5">{{ __('not found') }}</td>
                                     </tr>
                                 @endforelse
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
         </div>
-    <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Add Category</h4>
-                        <div class="card-body">
-                            <form action="{{ route('category.store') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="text" class="form-control mb-3" 
-                                placeholder="Add category" name="name"
-                                value="{{ old('name') }}">
-                                <select name="parent" class="form-control my-3 select_2">
-                                    <option value="" selected disabled>Parnet</option>
-                                    @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                             
-                                @endforeach
-                                </select>
-                                <textarea name="description" placeholder="Description" class="form-control my-3" rows="5">{{ old('description') }}</textarea>
-                                <input type="file" class="form-control my-3" name="image">
-                                <button type="submit" class="btn btn-primary btn-sm mt-3">Add+</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            
+     
+  <div class="col-lg-4">
+    <div class="card">
+        <div class="card-header">
+            <h4>Add Category</h4>
+            <div class="card-body">
+                <form action="{{ route('backend.category.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="text" class="form-control mb-3" 
+                    placeholder="Add category" name="name"
+                    value="{{ old('name') }}">
+                    <select name="parent" class="form-control my-3 select_2">
+                        <option value="" selected disabled>Parnet</option>
+                        @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                 
+                    @endforeach
+                    </select>
+                    <textarea name="description" placeholder="Description" class="form-control my-3" rows="5">{{ old('description') }}</textarea>
+                    <input type="file" class="form-control my-3" name="image">
+                    <button type="submit" class="btn btn-primary btn-sm mt-3">Add+</button>
+                </form>
+            </div>
         </div>
     </div>
-  </div>
+
+</div>
+
+</div>
 </div>
 
 @endsection

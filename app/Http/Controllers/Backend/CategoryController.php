@@ -27,11 +27,11 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-        // return view('backend.category.index');
-    }
+    // public function create()
+    // {
+    //     //
+    //     // return view('backend.category.index');
+    // }
 
     /**
      * Store a newly created resource in storage.

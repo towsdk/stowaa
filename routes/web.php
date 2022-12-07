@@ -52,10 +52,9 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
     //permission create route
     Route::post('/permission/store', [RolePermissionController::class, 'permissionStore'])->name('permission.store');
 
-});
 
-    // category route
-    Route::controller(CategoryController::class)->group(function(){
+     // category route
+     Route::controller(CategoryController::class)->group(function(){
         Route::get('/category','index')->name('category.index');
         Route::post('/category','store')->name('category.store');
         Route::get('/category/create','create')->name('category.create');
@@ -65,6 +64,10 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
         Route::delete('/category/{category}/delete','destroy')->name('category.destroy');
 
     });
+
+});
+
+   
 
 
 //User auth route

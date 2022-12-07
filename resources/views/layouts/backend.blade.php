@@ -177,18 +177,23 @@
                                     <a class="sidebar-menu-button" data-toggle="collapse" href="#category_menu">
                                         <i
                                             class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>
-                                        <span class="sidebar-menu-text">Category</span>
+                                        <span class="sidebar-menu-text">Product</span>
                                         <span class="ml-auto sidebar-menu-toggle-icon"></span>
                                     </a>
                                     <ul class="sidebar-submenu collapse" id="category_menu">
-                                        <li class="sidebar-menu-item{{ Route::is('backend.category.index') ? 'active': '' }}">
-                                            <a class="sidebar-menu-button" href="{{ route('category.index') }}">
-                                                <span class="sidebar-menu-text">Add Category</span>
+                                        <li class="sidebar-menu-item">
+                                            <a class="sidebar-menu-button">
+                                                <span class="sidebar-menu-text">Product</span>
                                             </a>
                                         </li>
-                                        <li class="sidebar-menu-item{{ Route::is('backend.category.index') ? 'active': '' }}">
-                                            <a class="sidebar-menu-button" href="{{ route('category.index') }}">
-                                                <span class="sidebar-menu-text">All Category</span>
+                                        <li class="sidebar-menu-item">
+                                            <a class="sidebar-menu-button">
+                                                <span class="sidebar-menu-text">Add Product</span>
+                                            </a>
+                                        </li>
+                                        <li class="sidebar-menu-item {{ Route::is('backend.category.index') ? 'active': '' }}">
+                                            <a class="sidebar-menu-button" href="{{ route('backend.category.index') }}">
+                                                <span class="sidebar-menu-text">Category</span>
                                             </a>
                                         </li>
                                     </ul>
