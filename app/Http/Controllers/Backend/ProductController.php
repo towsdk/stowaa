@@ -50,7 +50,7 @@ class ProductController extends Controller
             'sale_price'=> 'nullable|integer',
             'description'=> 'nullable',
             'add_info'=> 'nullable',
-            'image'=> 'required|mimes: png, jpg, jpeg',
+            'image'=> 'required|mimes:png,jpg,jpeg',
             'currency'=> 'required',
         ]);
 
@@ -68,7 +68,7 @@ class ProductController extends Controller
                 'sale_price'=>$request->sale_price,
                 'description'=>$request->description,
                 'add_info'=> $request->add_info,
-                'image'=> $request->image_name,
+                'image'=> $image_name,
                 'currency'=> $request->currency,
             ]);
 

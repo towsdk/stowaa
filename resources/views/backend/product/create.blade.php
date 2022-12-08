@@ -54,7 +54,7 @@
                         </div>
                         <div class="form-group">
                             <label for="Sku-code">Sku-code</label>
-                            <input class="form-control" type="text" name="Sku_code" placeholder="Sku-code" value="{{ old('sku_code') }}">
+                            <input class="form-control" type="text" name="sku_code" placeholder="Sku-code" value="{{ old('sku_code') }}">
                         </div>
                         <div class="form-group">
                             <label for="price">Price</label>
