@@ -18,8 +18,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->colorName(),
-            'slug' => Str::slug(fake()->unique()->colorName()),
+            'name' => fake()->unique()->colorName(),
+            // 'slug' => Str::slug(fake()->unique()->colorName()),
             'description' => fake()->sentence(),
             'image'=>'category.png',
             

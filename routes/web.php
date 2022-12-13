@@ -93,7 +93,7 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
      // size route
      Route::controller(ProductController::class)->prefix('product')->name('product.')->group(function(){
         Route::get('/','index')->name('index');
-        Route::get('/', 'create')->name('create');
+        Route::get('/create', 'create')->name('create');
         Route::post('/','store')->name('store');
         Route::get('/{product}/show','show')->name('show');
         Route::get('/{product}/edit','edit')->name('edit');

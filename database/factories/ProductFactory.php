@@ -21,7 +21,7 @@ class ProductFactory extends Factory
     {
         return [
             'title'=> fake()->sentence(),
-            'slug' => Str::slug(fake()->sentence()),
+            // 'slug' => Str::slug(fake()->sentence()),
             'user_id' => User::all()->random()->id,
             'sku_code'=> uniqid(),
             'short_description'=> fake()->paragraph(),

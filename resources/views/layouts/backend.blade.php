@@ -173,7 +173,8 @@
                                 </li>
 
 
-                                <li class="sidebar-menu-item {{ Route::is('backend.category*') ? 'active open': '' }}">
+                                <li class="sidebar-menu-item {{ Route::is(['backend.category.*', 'backend.product.*','backend.size.*',
+                                'backend.color.*']) ? 'active open': '' }}">
                                     <a class="sidebar-menu-button" data-toggle="collapse" href="#category_menu">
                                         <i
                                             class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>
@@ -182,13 +183,13 @@
                                     </a>
                                     <ul class="sidebar-submenu collapse" id="category_menu">
                                         
-                                        <li class="sidebar-menu-item {{ Route::is('backend.product.index') ? 'active': '' }}">
+                                        <li class="sidebar-menu-item {{ Route::is('backend.product.create') ? 'active': '' }}">
                                             <a class="sidebar-menu-button" href="{{ route('backend.product.create') }}">
                                                 <span class="sidebar-menu-text">Add Product</span>
                                             </a>
                                         </li>
                                         <li class="sidebar-menu-item {{ Route::is('backend.product.index') ? 'active': '' }}">
-                                            <a class="sidebar-menu-button" href="{{ route('backend.category.index') }}">
+                                            <a class="sidebar-menu-button" href="{{ route('backend.product.index') }}">
                                                 <span class="sidebar-menu-text">All  Product</span>
                                             </a>
                                         </li>

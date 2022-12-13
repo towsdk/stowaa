@@ -55,7 +55,7 @@ class CategoryController extends Controller
             Image::make($request->image)->crop(200, 256)->save(public_path('storage/category/'.$image_name, 90));
         }
         $data->name = $request->name;
-        $data->slug = $request->name;
+        // $data->slug = $request->name;
         $data->description = $request->parent;
         $data->parent_id= $request->parent;
         $data->image = $image_name;
