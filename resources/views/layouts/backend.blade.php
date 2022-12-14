@@ -110,15 +110,16 @@
                                 <a href="#account_menu" class="nav-link dropdown-toggle" data-toggle="dropdown"
                                     data-caret="false">
                                     <span class="mr-1 d-flex-inline">
-                                        <span class="text-light">Adrian D.</span>
+                                        <span class="text-light">{{ auth()->user()->name }}</span>
                                     </span>
-                                    <img src="assets/images/avatar/demi.png" class="rounded-circle" width="32"
-                                        alt="Frontted">
+                                    <img src="{{ Avatar::create(auth()->user()->name)->setDimension(40)->setFontSize(16)->toBase64() }}" alt="">
+                                    {{-- <img src="assets/images/avatar/demi.png" class="rounded-circle" width="32"
+                                        alt="Frontted"> --}}
                                 </a>
                                 <div id="account_menu" class="dropdown-menu dropdown-menu-right">
                                     <div class="dropdown-item-text dropdown-item-text--lh">
-                                        <div><strong>Adrian Demian</strong></div>
-                                        <div class="text-muted">@adriandemian</div>
+                                        <div><strong>{{ auth()->user()->name }}</strong></div>
+                                        <div class="text-muted">{{ auth()->user()->email }}</div>
                                     </div>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item active" href="index.html"><i
@@ -262,15 +263,21 @@
                           
 
                             <div class="d-flex align-items-center sidebar-p-a border-bottom sidebar-account">
-                                <a href="profile.html"
+                                <a href="#"
                                     class="flex d-flex align-items-center text-underline-0 text-body">
                                     <span class="avatar avatar-sm mr-2">
-                                        <img src="assets/images/avatar/demi.png" alt="avatar"
-                                            class="avatar-img rounded-circle">
+                                        {{-- <img src="assets/images/avatar/demi.png" alt="avatar"
+                                            class="avatar-img rounded-circle"> --}}
+                                        <img src="{{ Avatar::create(auth()->user()->name)->setDimension(40)->setFontSize(16)->toBase64() }}" alt="">
+
                                     </span>
                                     <span class="flex d-flex flex-column">
-                                        <strong>Adrian Demian</strong>
-                                        <small class="text-muted text-uppercase">Site Manager</small>
+                                        <strong>{{ auth()->user()->name }}</strong>
+                                        <small class="text-muted text-uppercase">
+                                            @foreach (auth()->user()->roles as $role)
+                                                {{ $role->name }}
+                                            @endforeach
+                                        </small>
                                     </span>
                                 </a>
                                 <div class="dropdown ml-auto">
@@ -278,8 +285,8 @@
                                         class="text-muted"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <div class="dropdown-item-text dropdown-item-text--lh">
-                                            <div><strong>Adrian Demian</strong></div>
-                                            <div>@adriandemian</div>
+                                            <div><strong>{{ auth()->user()->name }}</strong></div>
+                                            <div>{{ auth()->user()->email }}</div>
                                         </div>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item active" href="index.html">Dashboard</a>

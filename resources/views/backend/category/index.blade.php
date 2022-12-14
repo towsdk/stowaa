@@ -36,24 +36,43 @@
                                 </tr>
                                </thead>
                                 <tbody>
-                                    @forelse ($categories as $category)
+                                    @forelse ($categories as $key=>$category)
                                     <tr>
-                                        <td>{{ $category->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>
                                             @if ($category->image)
-                                            <img width="60" src="{{ asset('storage/category/'.$category->image) }}" alt={{ "$category->name" }}  >
+                                            <img width="40" src="{{ asset('storage/category/'.$category->image) }}" alt={{ "$category->name" }}  >
                                             @else
-                                            <img  width="60" src="{{ asset('storage/category/cat.png') }}" alt={{ "$category->name" }}  > </td>
+                                            <img src="{{Avatar::create($category->name)->setDimension(30)->setFontSize(16)->toBase64();}}" alt="{{ $category->name}}">
                                         </td>
                                             @endif
                                             <td>{{ $category->name }}</td>
                                             <td>{{ $category->slug }}</td>
-                                            <td>10</td>
+                                            <td>{{ $category->products_count }}</td>
                                             <td>{{ $category->status }}</td>
                                             <td>
                                                 <a href="#">Edit</a>
                                             </td>
                                     </tr>
+                                    @foreach ($category->childCategories as $category)
+                                    <tr style="background: #f1f1f1">
+                                        <td>--</td>
+                                        <td>
+                                            @if ($category->image)
+                                            <img width="40" src="{{ asset('storage/category/'.$category->image) }}" alt={{ "$category->name" }}  >
+                                            @else
+                                            <img src="{{Avatar::create($category->name)->setDimension(30)->setFontSize(16)->toBase64();}}" alt="{{ $category->name}}">
+                                        </td>
+                                            @endif
+                                            <td>{{ $category->name }}</td>
+                                            <td>{{ $category->slug }}</td>
+                                            <td>{{  $category->products_count  }}</td>
+                                            <td>{{ $category->status }}</td>
+                                            <td>
+                                                <a href="#">Edit</a>
+                                            </td>
+                                    </tr>
+                                    @endforeach
                                 @empty
                                     <tr>
                                         <td colspan="5">{{ __('not found') }}</td>
