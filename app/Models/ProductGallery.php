@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductGallery extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
     protected $guarded = [
         'id',
     ];
+
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 }

@@ -99,6 +99,8 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
         Route::get('/{product}/edit','edit')->name('edit');
         Route::put('/{product}/update','update')->name('update');
         Route::delete('/{product}/delete','destroy')->name('destroy');
+        Route::get('/{product}/restore','restore')->name('restore');
+        Route::delete('/{product}/permanent/delete','permanentDelete')->name('permanent.delete');
 
     });
 
