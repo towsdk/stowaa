@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('color_id')->constrained();
             $table->foreignId('size_id')->constrained();
             $table->integer('quantity');
-            $table->decimal('additional_price');
+            $table->decimal('additional_price')->nullable();
             $table->string('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

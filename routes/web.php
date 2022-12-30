@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\RolePermissionController;
 use App\Http\Controllers\Backend\ColorController;
+use App\Http\Controllers\Backend\InventoryController;
 use App\Http\Controllers\Backend\SizeController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Frontend\FrontendController;
@@ -90,7 +91,7 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
 
     });
 
-     // size route
+     // product route
      Route::controller(ProductController::class)->prefix('product')->name('product.')->group(function(){
         Route::get('/','index')->name('index');
         Route::get('/create', 'create')->name('create');
@@ -102,6 +103,19 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
         Route::get('/{product}/restore','restore')->name('restore');
         Route::delete('/{product}/permanent/delete','permanentDelete')->name('permanent.delete');
 
+    });
+     // inventories route
+     Route::controller(InventoryController::class)->prefix('inventory')->name('inventory.')->group(function(){
+        Route::get('/{id}','index')->name('index');
+        Route::post('/','store')->name('store');
+        Route::get('/{inventory}/show','show')->name('show');
+        Route::get('/{inventory}/edit','edit')->name('edit');
+        Route::put('/{inventory}/update','update')->name('update');
+        Route::delete('/{inventory}/delete','destroy')->name('destroy');
+        // Route::get('/{product}/restore','restore')->name('restore');
+        // Route::delete('/{product}/permanent/delete','permanentDelete')->name('permanent.delete');
+
+        Route::post('/select/color', 'selectColor')->name('color.select');
     });
 
 });

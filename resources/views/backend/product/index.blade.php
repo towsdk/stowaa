@@ -59,6 +59,7 @@
                                         <td>
                                             {{ Str::limit($product->title, 20, '...') }}
                                             <div class="my-2">
+                                                <a href="{{ route('backend.inventory.index', $product->id) }}" class="btn btn-sm btn-success">+ Store</a>
                                                 <a href="" class="btn btn-sm btn-primary">View</a>
                                                 <a href="{{ route('backend.product.edit', $product->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <form action="{{ route('backend.product.destroy', $product->id) }}" method="POST" class="d-inline">
