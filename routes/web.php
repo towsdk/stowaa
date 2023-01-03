@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\InventoryController;
 use App\Http\Controllers\Backend\SizeController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\Frontend\ShopController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserAuth\UserAuthController;
 use App\Models\User;
@@ -35,6 +36,9 @@ Route::controller(FrontendController::class)->name('frontend.')->group(function(
     Route::get('/', 'frontendIndex')->name('home');
 });
 
+Route::get('/shop', [ShopController::class, 'index'])->name('frontend.shop.index');
+Route::get('/shop/{slug}', [ShopController::class, 'shopDetails'])->name('frontend.shop.details');
+Route::post('/shop/single/color', [ShopController::class, 'shopColor'])->name('frontend.shop.color');
 
 //backend
 Route::prefix('dashboard')->name('backend.')->group(function(){
