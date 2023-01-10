@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Inventory extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $guarded = [
-        'id',
-    ];
+    protected $guarded = ['id'];
 
     public function size(){
         return $this->belongsTo(Size::class);
@@ -19,5 +17,9 @@ class Inventory extends Model
 
     public function color(){
         return $this->belongsTo(Color::class);
+    }
+    
+    public function product(){
+        return $this->belongsTo(Product::class);
     }
 }

@@ -783,44 +783,44 @@
 
     // quantity - start
     // --------------------------------------------------
-    (function() {
-        window.inputNumber = function(el) {
-            var min = el.attr("min") || false;
-            var max = el.attr("max") || false;
+    // (function() {
+    //     window.inputNumber = function(el) {
+    //         var min = el.attr("min") || false;
+    //         var max = el.attr("max") || false;
 
-            var els = {};
+    //         var els = {};
 
-            els.dec = el.prev();
-            els.inc = el.next();
+    //         els.dec = el.prev();
+    //         els.inc = el.next();
 
-            el.each(function() {
-                init($(this));
-            });
+    //         el.each(function() {
+    //             init($(this));
+    //         });
 
-            function init(el) {
-                els.dec.on("click", decrement);
-                els.inc.on("click", increment);
+    //         function init(el) {
+    //             els.dec.on("click", decrement);
+    //             els.inc.on("click", increment);
 
-                function decrement() {
-                    var value = el[0].value;
-                    value--;
-                    if (!min || value >= min) {
-                        el[0].value = value;
-                    }
-                }
+    //             function decrement() {
+    //                 var value = el[0].value;
+    //                 value--;
+    //                 if (!min || value >= min) {
+    //                     el[0].value = value;
+    //                 }
+    //             }
 
-                function increment() {
-                    var value = el[0].value;
-                    value++;
-                    if (!max || value <= max) {
-                        el[0].value = value++;
-                    }
-                }
-            }
-        };
-    })();
-    inputNumber($(".input_number"));
-    inputNumber($(".input_number_2"));
+    //             function increment() {
+    //                 var value = el[0].value;
+    //                 value++;
+    //                 if (!max || value <= max) {
+    //                     el[0].value = value++;
+    //                 }
+    //             }
+    //         }
+    //     };
+    // })();
+    // inputNumber($(".input_number"));
+    // inputNumber($(".input_number_2"));
 
 
     // DATA BACKGROUND IMAGE

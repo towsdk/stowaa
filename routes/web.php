@@ -39,6 +39,7 @@ Route::controller(FrontendController::class)->name('frontend.')->group(function(
 Route::get('/shop', [ShopController::class, 'index'])->name('frontend.shop.index');
 Route::get('/shop/{slug}', [ShopController::class, 'shopDetails'])->name('frontend.shop.details');
 Route::post('/shop/single/color', [ShopController::class, 'shopColor'])->name('frontend.shop.color');
+Route::post('/select/size-color', [ShopController::class, 'selectSizeColor'])->name('frontend.color.size.select');
 
 //backend
 Route::prefix('dashboard')->name('backend.')->group(function(){

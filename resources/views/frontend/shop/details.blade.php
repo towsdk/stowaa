@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="item_price">
-                            <span>
+                            <span class="item_p">
                                 @if ($product->currency == 'usd')
                                 $
                                 @else
@@ -90,7 +90,7 @@
                                             <h4 class="input_title">Size *</h4>
                                             <select class="nice_select size_select">
                                                 <option data-display="- Please select -">Choose A Option</option>
-                                                 @foreach ($product->inventories as $inventory)
+                                                 @foreach ($sizeOf as $inventory)
                                                  <option value="{{ $inventory->size->id }}">{{ $inventory->size->name }}</option>
                                                 @endforeach
                                                 
@@ -101,12 +101,12 @@
                                         <div class="select_option clearfix">
                                             <h4 class="input_title">Color *</h4>
                                             <select class="form-control color_select">
-                                               
+                                               <option selected disabled></option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="repuired_text">Repuired Fiields *</span>
+                                <span class="repuired_text">Stock Limit<span id="stock_q"></span>.</span>
                             </form>
                         </div>
 
@@ -579,25 +579,68 @@
 
     <script>
         $(function(){
-            $('.size_select').on('change', function(){
-            var size_id = $('.size_select').val();
-            var product_id = $('.product_id').val();
 
-            $.ajax({
-                url:" {{ route('frontend.shop.color') }}",
-                type: 'POST',
-                data: {
-                    size_id: size_id,
-                    product_id: product_id,
-                    _token: '{{ csrf_token() }}'
-                },
-                dataType: 'json', 
-                success: function (data) {
-                    // console.log(data);
-                    $('.color_select').html(data);
-                }
-            });
-        });
+                // input_number_decrement
+                // input_number
+                // input_number_increment
+
+                var input_number = $('.input_number');
+                var inc = input_number.val();
+                $('.input_number_increment').on('click', function(){
+                    inc ++;
+                    input_number.val(inc);
+                })
+
+                $('.input_number_decrement').on('click', function(){
+                    if(inc > 1){
+                        inc --;
+                    }
+                    input_number.val(inc);
+                })
+
+                $('.size_select').on('change', function(){
+                    var size_id = $('.size_select').val();
+                    var product_id = $('.product_id').val();
+
+                 $.ajax({
+                    url:" {{ route('frontend.shop.color') }}",
+                    type: 'POST',
+                    data: {
+                        size_id: size_id,
+                        product_id: product_id,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json', 
+                    success: function (data) {
+                        $('.color_select').html(data);
+                        
+                    }
+                  });
+                });
+
+                $('.color_select').on('change', function(){
+                    var size_id = $('.size_select').val();
+                    var color_id = $('.color_select').val();
+                    var product_id = $('.product_id').val();
+
+                 $.ajax({
+                    url:" {{ route('frontend.color.size.select') }}",
+                    type: 'POST',
+                    data: {
+                        size_id : size_id,
+                        color_id: color_id,
+                        product_id: product_id,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json', 
+                    success: function (data) {
+                        console.log(data);
+                        $('#stock_q').html(data['quantity']);
+                        $('.item_price').html(data['original_price']);
+                        
+                    }
+                  });
+                });
         })
     </script>
 @endsection
