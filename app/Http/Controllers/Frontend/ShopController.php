@@ -47,6 +47,7 @@ class ShopController extends Controller
         }
 
         $data = [
+            "id" => $inventory->id,
             "quantity" => $inventory->quantity,
             "original_price" => $original_price,
         ];

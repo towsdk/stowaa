@@ -106,31 +106,42 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="repuired_text">Stock Limit<span id="stock_q"></span>.</span>
+                                <span class="repuired_text">Stock Limit: <span id="stock_q"></span>.</span>
                             </form>
                         </div>
 
-                        <div class="quantity_wrap">
-                            <form action="#">
-                                <div class="quantity_input">
-                                    <button type="button" class="input_number_decrement">
-                                        <i class="fal fa-minus"></i>
-                                    </button>
-                                    <input class="input_number" type="text" value="1">
-                                    <button type="button" class="input_number_increment">
-                                        <i class="fal fa-plus"></i>
-                                    </button>
-                                </div>
-                            </form>
+                        
+                        <form action="{{ route('frontend.cart.store') }}" method="POST">
+                           @csrf
+                            <div class="quantity_wrap">
+                                    <input type="hidden" name="inventory_id" id="inventory_id">
+                                    <input type="hidden" name="total" id="total">
+                                    <div class="quantity_input">
+                                        <button type="button" class="input_number_decrement">
+                                            <i class="fal fa-minus"></i>
+                                        </button>
+                                        <input type="text" class="input_number" name="quantity" value="1">
+                                        <button type="button" class="input_number_increment">
+                                            <i class="fal fa-plus"></i>
+                                        </button>
+                                    </div>
+                            
 
-                            <div class="total_price">Total: $620,99</div>
-                        </div>
+                                <div class="total_price">Total: $ <span class="total_price_in">
+                                    @if ($product->sale_price)
+                                    {{ $product->sale_price }}
+                                    @else
+                                    {{ $product->price }}   
+                                    @endif
+                                </span></div>
+                            </div>
 
-                        <ul class="default_btns_group ul_li">
-                            <li><a class="btn btn_primary addtocart_btn" href="#!">Add To Cart</a></li>
-                            <li><a href="#!"><i class="far fa-compress-alt"></i></a></li>
-                            <li><a href="#!"><i class="fas fa-heart"></i></a></li>
-                        </ul>
+                            <ul class="default_btns_group ul_li">
+                                <li><button type="submit" class="btn btn_primary addtocart_btn">Add To Cart</button></li>
+                                <li><a href="#!"><i class="far fa-compress-alt"></i></a></li>
+                                <li><a href="#!"><i class="fas fa-heart"></i></a></li>
+                            </ul>
+                        </form>
 
                         <ul class="default_share_links ul_li">
                             <li>
@@ -580,22 +591,35 @@
     <script>
         $(function(){
 
-                // input_number_decrement
-                // input_number
-                // input_number_increment
-
+                var stock_limit = $('#stock_q');
                 var input_number = $('.input_number');
-                var inc = input_number.val();
+                var inc = parseInt(input_number.val());
+                var sale_price = $('.item_price');
+                // var item_p = $('.item_p');
+                var total_price = $('.total_price_in');
+
+                var inventory_id = $('#inventory_id');
+                var total = $('#total');
+             
                 $('.input_number_increment').on('click', function(){
-                    inc ++;
+                   
+                    if(stock_limit.html() > inc ){
+                        inc++;
+                    }
                     input_number.val(inc);
-                })
+                    var fixedNum = parseFloat(sale_price.html()*inc).toFixed(2);
+                    total_price.html(fixedNum);
+                    total.val(fixedNum);
+                });
 
                 $('.input_number_decrement').on('click', function(){
                     if(inc > 1){
-                        inc --;
+                        inc--;
                     }
                     input_number.val(inc);
+                   var fixedNum = parseFloat(sale_price.html()*inc).toFixed(2);
+                   total_price.html(fixedNum);
+                   total.val(fixedNum);
                 })
 
                 $('.size_select').on('change', function(){
@@ -634,9 +658,11 @@
                     },
                     dataType: 'json', 
                     success: function (data) {
-                        console.log(data);
-                        $('#stock_q').html(data['quantity']);
-                        $('.item_price').html(data['original_price']);
+                        //console.log(data);
+                        stock_limit.html(data['quantity']);
+                        sale_price.html(data['original_price']);
+                        total_price.html(data['original_price']);
+                        inventory_id.val(data['id']);
                         
                     }
                   });

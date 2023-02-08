@@ -1,21 +1,22 @@
 <?php
 
-use App\Http\Controllers\Backend\BackendController;
-use App\Http\Controllers\Backend\CategoryController;
-use App\Http\Controllers\Backend\RolePermissionController;
-use App\Http\Controllers\Backend\ColorController;
-use App\Http\Controllers\Backend\InventoryController;
-use App\Http\Controllers\Backend\SizeController;
-use App\Http\Controllers\Backend\ProductController;
-use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\Frontend\ShopController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserAuth\UserAuthController;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use Spatie\Permission\Models\Permission;
+use App\Http\Controllers\Backend\SizeController;
+use App\Http\Controllers\Backend\ColorController;
+use App\Http\Controllers\Frontend\ShopController;
+use App\Http\Controllers\Frontend\Cartcontroller;
+use App\Http\Controllers\Backend\BackendController;
+use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\InventoryController;
+use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\UserAuth\UserAuthController;
+use App\Http\Controllers\Backend\RolePermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,18 +31,32 @@ use Spatie\Permission\Models\Permission;
 
 Auth::routes(['verify' => true]);
 
-//frontend controller
+//frontend routes
 
-Route::controller(FrontendController::class)->name('frontend.')->group(function(){
-    Route::get('/', 'frontendIndex')->name('home');
+Route::name('frontend.')->group(function(){
+    
+    Route::controller(FrontendController::class)->group(function(){
+        Route::get('/', 'frontendIndex')->name('home');
+    });
+
+    Route::controller(ShopController::class)->group(function(){
+
+        Route::get('/shop','index')->name('shop.index');
+        Route::get('/shop/{slug}','shopDetails')->name('shop.details');
+        Route::post('/shop/single/color','shopColor')->name('shop.color');
+        Route::post('/select/size-color','selectSizeColor')->name('color.size.select');
+        
+    });
+
+    Route::controller(Cartcontroller::class)->prefix('cart')->name('cart.')->group(function(){
+        Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');    
+    });
 });
 
-Route::get('/shop', [ShopController::class, 'index'])->name('frontend.shop.index');
-Route::get('/shop/{slug}', [ShopController::class, 'shopDetails'])->name('frontend.shop.details');
-Route::post('/shop/single/color', [ShopController::class, 'shopColor'])->name('frontend.shop.color');
-Route::post('/select/size-color', [ShopController::class, 'selectSizeColor'])->name('frontend.color.size.select');
 
-//backend
+
+//backend routes
 Route::prefix('dashboard')->name('backend.')->group(function(){
     Route::get('/',[BackendController::class, 'dashboardIndex'])->middleware('verified')->name('home');
 
