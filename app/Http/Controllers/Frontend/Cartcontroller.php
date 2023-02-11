@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 
 class Cartcontroller extends Controller
@@ -43,14 +44,12 @@ class Cartcontroller extends Controller
         $request->validate([
             "inventory_id"=>"required|integer",
             "quantity"=>"required|integer",
-            "total"=>"required|numeric",
         ]);
 
         $success = Cart::create([
             "user_id"=>auth()->user()->id,
             "inventory_id" => $request->inventory_id,
             "cart_quantity" => $request->quantity,
-            "total_price" => $request->total,
         ]);
 
         if($success){
@@ -91,7 +90,12 @@ class Cartcontroller extends Controller
      */
     public function update(Request $request, Cart $cart)
     {
-        //
+        $cart = Cart::where('inventory_id',$request->inventory_id)->where('user_id', auth()->user()->id)->first();
+        $cart->update([
+        'cart_quantity' => $request->quantity,
+       ]); 
+       $quan = $cart->cart_quantity;
+        return response()->json($quan);  
     }
 
     /**

@@ -31,8 +31,8 @@
                             <th>Product</th>
                             <th class="text-center">Price</th>
                             <th class="text-center">Color & Size</th>
-                            <th class="text-center">Additional Price</th>
                             <th class="text-center">Quantity</th>
+                            <th class="text-center">Stock</th>
                             <th class="text-center">Total</th>
                             <th class="text-center">Remove</th>
                         </tr>
@@ -40,18 +40,19 @@
                     <tbody>
                         @foreach ($carts as $cart)
                        
-                        <tr>
+                        <tr class="parent_row">
                             <td>
                                 <div class="cart_product">
                                     <img src="{{ asset('storage/product/'.$cart->inventory->product->image) }}" alt="image_not_found">
                                     <h3><a href="shop_details.html"> {{ $cart->inventory->product->title }}</a></h3>
                                 </div>
                             </td>
-                            <td class="text-center"><span class="price_text">$
+                            <td class="text-center">$
+                                <span class="price_text base_price">
                               @if ($cart->inventory->product->sale_price)
-                                  {{ $cart->inventory->product->sale_price }}
+                                  {{ $cart->inventory->product->sale_price + $cart->inventory->additional_price ?? ''}}
                                   @else
-                                  {{ $cart->inventory->product->price }}
+                                  {{ $cart->inventory->product->price + $cart->inventory->additional_price ?? ''}}
                               @endif  
                             </span></td>
                             <td>
@@ -59,27 +60,28 @@
                                 - 
                                 <span>{{ $cart->inventory->color->name }}</span>
                             </td>
-                            <td>
-                                @if ($cart->inventory->additional_price)
-                                    {{ $cart->inventory->additional_price }}
-                                    @else
-                                    --
-                                @endif
-                            </td>
                             <td class="text-center">
                                 <form action="#">
                                     <div class="quantity_input">
+                                        <input type="hidden" class="stock" value="{{ $cart->inventory->quantity }}">
+                                        <input type="hidden" class="inventory_id" value="{{ $cart->inventory->id }}">
+                                        <input type="hidden" class="stock" value="{{ $cart->inventory->quantity }}">
                                         <button type="button" class="input_number_decrement">
                                             <i class="fal fa-minus"></i>
                                         </button>
-                                        <input class="input_number" type="text" value="1" />
+                                        <input class="input_number" type="text" value="{{ $cart->cart_quantity }}" />
                                         <button type="button" class="input_number_increment">
                                             <i class="fal fa-plus"></i>
                                         </button>
                                     </div>
                                 </form>
                             </td>
-                            <td class="text-center"><span class="price_text">${{ $cart->total_price }}</span></td>
+                            <td>
+                                <span >{{ $cart->inventory->quantity }}</span>
+                            </td>
+                            <td class="text-center">$
+                                <span class="price_text price_total">
+                                    {{ (($cart->inventory->product->sale_price ?? $cart->inventory->product->price) + $cart->inventory->additional_price ?? '') * $cart->cart_quantity }}</span></td>
                             <td class="text-center"><button type="button" class="remove_btn"><i class="fal fa-trash-alt"></i></button></td>
                         </tr>  
                         @endforeach
@@ -165,5 +167,76 @@
             </div>
         </div>
     </section>
-    <!-- cart_section - end
+    
+@endsection
+
+@section('script')
+   <script>
+    $(function(){
+        var input_number = $('.input_number');
+
+        $('.input_number_increment').on('click', function(){
+            var parent_row = $(this).parents('.parent_row');
+            var base_price = parent_row.children('td').find('.base_price').html();
+            var price_total = parent_row.children('td').find('.price_total');
+
+            var child = $(this).parent('.quantity_input').children('.input_number');
+            var inc = child.val();
+
+            var stock = $(this).parent('.quantity_input').children('.stock').val();
+            if(inc < parseInt(stock)){
+                inc++;
+            }
+            child.val(inc);
+
+            var inventory_id = $(this).parent('.quantity_input').children('.inventory_id').val();
+
+            $.ajax({
+                    url:" {{ route('frontend.cart.update') }}",
+                    type: 'POST',
+                    data: {
+                        inventory_id : inventory_id,
+                        quantity: inc,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json', 
+                    success: function (data) {
+                        price_total.html(parseInt(base_price)*inc);
+                        
+                    }
+                  });
+        })
+        
+        $('.input_number_decrement').on('click',function(){
+            var parent_row = $(this).parents('.parent_row');
+            var base_price = parent_row.children('td').find('.base_price').html();
+            var price_total = parent_row.children('td').find('.price_total');
+
+            var child = $(this).parent('.quantity_input').children('.input_number');
+            var inc = child.val();
+            if(inc > 1){
+                inc--;
+            }
+            child.val(inc);
+
+            var inventory_id = $(this).parent('.quantity_input').children('.inventory_id').val();
+
+            $.ajax({
+                    url:" {{ route('frontend.cart.update') }}",
+                    type: 'POST',
+                    data: {
+                        inventory_id : inventory_id,
+                        quantity: inc,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json', 
+                    success: function (data) {
+                         price_total.html(parseInt(base_price)*inc);
+                        
+                    }
+                  }); 
+
+        })
+    })
+   </script>
 @endsection

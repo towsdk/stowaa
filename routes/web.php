@@ -51,6 +51,7 @@ Route::name('frontend.')->group(function(){
     Route::controller(Cartcontroller::class)->prefix('cart')->name('cart.')->group(function(){
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');    
+        Route::post('/update', 'update')->name('update');    
     });
 });
 

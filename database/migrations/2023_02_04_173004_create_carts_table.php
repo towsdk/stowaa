@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('inventory_id')->constrained();
             $table->integer('cart_quantity');
-            $table->integer('total_price');
             $table->timestamps();
         });
     }

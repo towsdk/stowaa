@@ -115,7 +115,6 @@
                            @csrf
                             <div class="quantity_wrap">
                                     <input type="hidden" name="inventory_id" id="inventory_id">
-                                    <input type="hidden" name="total" id="total">
                                     <div class="quantity_input">
                                         <button type="button" class="input_number_decrement">
                                             <i class="fal fa-minus"></i>
@@ -601,6 +600,9 @@
                 var inventory_id = $('#inventory_id');
                 var total = $('#total');
              
+                var original_price = {{ $product->sale_price ?? $product->price }};
+                
+
                 $('.input_number_increment').on('click', function(){
                    
                     if(stock_limit.html() > inc ){
@@ -640,6 +642,7 @@
                         
                     }
                   });
+                  total_price.html(original_price);
                 });
 
                 $('.color_select').on('change', function(){
