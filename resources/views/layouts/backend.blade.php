@@ -245,6 +245,14 @@
                                 @endcanany
 
                                 <li class="sidebar-menu-item">
+                                    <a class="sidebar-menu-button" href="{{ route('backend.coupon.index') }}">
+                                        <i
+                                            class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>
+                                        <span class="sidebar-menu-text">Coupon</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidebar-menu-item">
                                     <a class="sidebar-menu-button" data-toggle="collapse" href="#apps_menu">
                                         <i
                                             class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>

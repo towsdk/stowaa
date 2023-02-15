@@ -6,10 +6,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use Spatie\Permission\Models\Permission;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\Backend\SizeController;
 use App\Http\Controllers\Backend\ColorController;
-use App\Http\Controllers\Frontend\ShopController;
 use App\Http\Controllers\Frontend\Cartcontroller;
+use App\Http\Controllers\Frontend\ShopController;
 use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\CategoryController;
@@ -51,7 +52,8 @@ Route::name('frontend.')->group(function(){
     Route::controller(Cartcontroller::class)->prefix('cart')->name('cart.')->group(function(){
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');    
-        Route::post('/update', 'update')->name('update');    
+        Route::post('/update', 'update')->name('update');
+        Route::delete('/delete/{cart}', 'destroy')->name('delete');
     });
 });
 
@@ -137,6 +139,16 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
         // Route::delete('/{product}/permanent/delete','permanentDelete')->name('permanent.delete');
 
         Route::post('/select/color', 'selectColor')->name('color.select');
+    });
+
+    // Coupon route
+    Route::controller(CouponController::class)->prefix('coupon')->name('coupon.')->group(function(){
+        Route::get('/','index')->name('index');
+        Route::post('/','store')->name('store');
+        Route::get('/{coupon}/edit','edit')->name('edit');
+        Route::put('/{coupon}/update','update')->name('update');
+        Route::delete('/{coupon}/delete','destroy')->name('destroy');
+
     });
 
 });

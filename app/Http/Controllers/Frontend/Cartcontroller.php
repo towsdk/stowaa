@@ -106,6 +106,7 @@ class Cartcontroller extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        $cart->delete();
+        return back()->with('success', "cart delete successfully");
     }
 }

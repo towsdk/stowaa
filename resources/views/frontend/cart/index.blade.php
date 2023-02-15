@@ -82,7 +82,13 @@
                             <td class="text-center">$
                                 <span class="price_text price_total">
                                     {{ (($cart->inventory->product->sale_price ?? $cart->inventory->product->price) + $cart->inventory->additional_price ?? '') * $cart->cart_quantity }}</span></td>
-                            <td class="text-center"><button type="button" class="remove_btn"><i class="fal fa-trash-alt"></i></button></td>
+                            <td class="text-center">
+                                <form action="{{ route('frontend.cart.delete', $cart->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="remove_btn"><i class="fal fa-trash-alt"></i></button>
+                                </form>
+                            </td>
                         </tr>  
                         @endforeach
                         
