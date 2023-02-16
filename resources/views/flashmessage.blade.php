@@ -25,3 +25,17 @@
  </script>
      
  @endif
+
+ @if (Session::has('warning'))
+     
+ <script>
+    Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: '{{ Session::get('warning')}}',
+  showConfirmButton: false,
+  timer: 5000
+})
+ </script>
+     
+ @endif

@@ -99,15 +99,18 @@
             <div class="cart_btns_wrap">
                 <div class="row">
                     <div class="col col-lg-6">
-                        <form action="#">
+                        <form action="{{ route('frontend.apply.coupon') }}" method="POST">
+                            @csrf
                             <div class="coupon_form form_item mb-0">
-                                <input type="text" name="coupon" placeholder="Coupon Code...">
+                                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                <input type="text" name="coupon" placeholder="Coupon Code..." value="{{ old('coupon') }}">
                                 <button type="submit" class="btn btn_dark">Apply Coupon</button>
                                 <div class="info_icon">
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Your Info Here"></i>
                                 </div>
                             </div>
                         </form>
+                    
                     </div>
 
                     <div class="col col-lg-6">
@@ -157,12 +160,20 @@
                         <ul class="ul_li_block">
                             <li>
                                 <span>Cart Subtotal</span>
-                                <span>$52.50</span>
+                                <span id="display_sub_total">
+                                    {{ $carts->sum('sub_total') }}
+                                </span>
                             </li>
                             <li>
                                 <span>Shipping and Handling</span>
                                 <span>Free Shipping</span>
                             </li>
+                            @if (Session::has('coupon'))
+                            <li>
+                                <span>Coupon ({{ Session::get('coupon')['couponName'] }})</span>
+                                <span> - {{ Session::get('coupon')['amount'] }}</span>
+                            </li>
+                            @endif
                             <li>
                                 <span>Order Total</span>
                                 <span class="total_price">$52.50</span>
@@ -180,6 +191,7 @@
    <script>
     $(function(){
         var input_number = $('.input_number');
+        var display_sub_total = $('#display_sub_total');
 
         $('.input_number_increment').on('click', function(){
             var parent_row = $(this).parents('.parent_row');
@@ -203,12 +215,14 @@
                     data: {
                         inventory_id : inventory_id,
                         quantity: inc,
+                        base_price: base_price,
                         _token: '{{ csrf_token() }}'
                     },
                     dataType: 'json', 
                     success: function (data) {
                         price_total.html(parseInt(base_price)*inc);
-                        
+                        display_sub_total.html(data);
+                        // console.log(data);
                     }
                   });
         })
@@ -233,12 +247,14 @@
                     data: {
                         inventory_id : inventory_id,
                         quantity: inc,
+                        base_price:base_price,
                         _token: '{{ csrf_token() }}'
                     },
                     dataType: 'json', 
                     success: function (data) {
                          price_total.html(parseInt(base_price)*inc);
-                        
+                         display_sub_total.html(data);
+                        // console.log(data);
                     }
                   }); 
 

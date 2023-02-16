@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CouponController extends Controller
 {
@@ -96,5 +98,24 @@ class CouponController extends Controller
     public function destroy(Coupon $coupon)
     {
         //
+    }
+    public function applyCoupon(Request $request)
+    {
+        $carts = Cart::where('user_id', auth()->user()->id);
+        $coupon = Coupon::where('status', 1)->where('name', $request->coupon)->first();
+        
+        if($coupon->expiry_date < now()){
+            return back()->with('warning', 'Coupon date expired');
+        }else if($carts->sum('sub_total') < (int) $coupon->limit){
+            return back()->with('warning', 'Cart not applicable for this amount');
+        }else{
+            $coupon = [
+                'couponName'=> $coupon->name,
+                'amount'=> $coupon->discount,
+            ];
+
+            Session::put('coupon', $coupon);
+            return back();
+        }
     }
 }

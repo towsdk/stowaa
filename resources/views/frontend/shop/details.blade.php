@@ -115,6 +115,11 @@
                            @csrf
                             <div class="quantity_wrap">
                                     <input type="hidden" name="inventory_id" id="inventory_id">
+                                    <input type="hidden" name="sub_total" id="sub_total" value=" @if ($product->sale_price)
+                                    {{ $product->sale_price }}
+                                    @else
+                                    {{ $product->price }}   
+                                    @endif"> 
                                     <div class="quantity_input">
                                         <button type="button" class="input_number_decrement">
                                             <i class="fal fa-minus"></i>
@@ -596,6 +601,7 @@
                 var sale_price = $('.item_price');
                 // var item_p = $('.item_p');
                 var total_price = $('.total_price_in');
+                var sub_total = $('#sub_total');
 
                 var inventory_id = $('#inventory_id');
                 var total = $('#total');
@@ -611,6 +617,7 @@
                     input_number.val(inc);
                     var fixedNum = parseFloat(sale_price.html()*inc).toFixed(2);
                     total_price.html(fixedNum);
+                    // sub_total.val(fixedNum);
                     total.val(fixedNum);
                 });
 
@@ -621,6 +628,7 @@
                     input_number.val(inc);
                    var fixedNum = parseFloat(sale_price.html()*inc).toFixed(2);
                    total_price.html(fixedNum);
+                //    sub_total.val(fixedNum);
                    total.val(fixedNum);
                 })
 

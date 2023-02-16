@@ -1,5 +1,5 @@
 @extends('layouts.backend')
-@section('title', 'Coupon')
+@section('title', 'Shipping_Charge')
 @section('content')
 <div class="container-fluid page__heading-container">
     <div class="page__heading d-flex align-items-end">
@@ -8,10 +8,10 @@
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('backend.home') }}">Home</a></li>
                     <li class="breadcrumb-item active"
-                        aria-current="page">Product Coupon</li>
+                        aria-current="page"> Shipping Charge</li>
                 </ol>
             </nav>
-            <h1 class="m-0">Coupon</h1>
+            <h1 class="m-0">Shipping Charge</h1>
         </div>
     </div>
 </div>
@@ -26,22 +26,18 @@
                             <table class="table">
                                 <tr>
                                     <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Discount</th>
-                                    <th>Limit</th>
-                                    <th>Expiry Date</th>
+                                    <th>Location</th>
+                                    <th>Amount</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                                
-                                @foreach ($coupons as $coupon)
+                                @foreach ($shippings as $shipping)
                                 <tr>
-                                    <td>{{ $coupon->id }}</td>
-                                    <td>{{ $coupon->name }}</td>
-                                    <td>{{ $coupon->discount }}</td>
-                                    <td>{{ $coupon->limit }}</td>
-                                    <td>{{ ($coupon->expiry_date)->isoFormat('D MMM Y') }}</td>
-                                    <td>{{ $coupon->status }}</td>
+                                    <td>{{ $shipping->id }}</td>
+                                    <td>{{ $shipping->location }}</td>
+                                    <td>{{ $shipping->charge }}</td>
+                                    <td>{{ $shipping->status }}</td>
                                      <td>
                                         <a href=""></a>
                                      </td>
@@ -56,25 +52,22 @@
   <div class="col-lg-4">
     <div class="card">
         <div class="card-header">
-            <h4>Add coupon</h4>
+            <h4>Add shipping charge</h4>
             <div class="card-body">
-                <form action="{{ route('backend.coupon.store') }}" method="POST" >
+                <form action="{{ route('backend.shipping.charge.store') }}" method="POST" >
                     @csrf
                     <div class="form-group">
-                        <input type="text" class="form-control mb-3" placeholder="Name" name="name" value="{{ old('name') }}">
+                        <input type="text" class="form-control mb-3" placeholder="Location" name="location" value="{{ old('location') }}">
                     </div>
-                    @error('name')
+                    @error('location')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
                     <div class="form-group">
-                        <input type="number" class="form-control mb-3" placeholder="Discount" name="discount" value="{{ old('discount') }}">
+                        <input type="number" class="form-control mb-3" placeholder="Amount" name="charge" value="{{ old('charge') }}">
                     </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control mb-3" placeholder="Limit" name="limit" value="{{ old('limit') }}">
-                    </div>
-                    <div class="form-group">
-                        <input type="date" class="form-control mb-3" placeholder="Expiry Date" name="expiry_date" value="{{ old('expiry_date') }}">
-                    </div>
+                    @error('charge')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
                     <button type="submit" class="btn btn-primary btn-sm mt-2">Add +</button>
                 </form>
             </div>
