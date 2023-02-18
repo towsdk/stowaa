@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Inventory;
+use App\Models\ShippingCharge;
 use Illuminate\Http\Request;
 
 class Cartcontroller extends Controller
@@ -17,7 +18,8 @@ class Cartcontroller extends Controller
     public function index()
     {
         $carts=Cart::where('user_id',auth()->user()->id)->get();
-        return view('frontend.cart.index', compact('carts'));
+        $shippingCharges = ShippingCharge::all();
+        return view('frontend.cart.index', compact('carts','shippingCharges'));
     }
 
     /**
@@ -93,14 +95,14 @@ class Cartcontroller extends Controller
      */
     public function update(Request $request, Cart $cart)
     {
-        $cart = Cart::where('inventory_id',$request->inventory_id)->where('user_id', auth()->user()->id)->first();
+        $cart = Cart::where('inventory_id',$request->inventory_id)->where('id', $request->cart_id)->where('user_id', auth()->user()->id)->first();
         $cart->update([
         'cart_quantity' => $request->quantity,
         'sub_total' => $request->quantity * $request->base_price,
        ]); 
        $quan = $cart->cart_quantity;
        $subTotal = $cart->sum('sub_total');
-       
+
         return response()->json($subTotal);  
     }
 
@@ -114,5 +116,10 @@ class Cartcontroller extends Controller
     {
         $cart->delete();
         return back()->with('success', "cart delete successfully");
+    }
+
+    public function cheeckoutView(){
+        $carts=Cart::where('user_id',auth()->user()->id)->get();
+        return view('frontend.cart.cheeckout', compact('carts'));
     }
 }

@@ -39,13 +39,15 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/nice-select.css')}}">
 
     <!-- woocommercen - css include -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/woocommerce.css')}}">
-
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/woocommerce.css')}}"> --}}
+    
+    @yield('css')
+    
     <!-- custom - css include -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.15/sweetalert2.min.css"  />
-
-    @yield('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/style.css')}}">
+    
+    
 </head>
 
 <body>

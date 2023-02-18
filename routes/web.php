@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use Spatie\Permission\Models\Permission;
-use App\Http\Controllers\CouponController;
 use App\Http\Controllers\Backend\SizeController;
 use App\Http\Controllers\Backend\ColorController;
 use App\Http\Controllers\Frontend\Cartcontroller;
@@ -19,6 +18,7 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\UserAuth\UserAuthController;
 use App\Http\Controllers\Backend\RolePermissionController;
 use App\Http\Controllers\ShippingChargeController;
+use App\Http\Controllers\Backend\CouponController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,10 +54,14 @@ Route::name('frontend.')->group(function(){
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');    
         Route::post('/update', 'update')->name('update');
-        Route::delete('/delete/{cart}', 'destroy')->name('delete');  });
+        Route::delete('/delete/{cart}', 'destroy')->name('delete');  
+        Route::get('/cheeckout', 'cheeckoutView')->name('cheeckout'); 
+     });
 
     Route::post('/apply/coupon', [CouponController::class, 'applyCoupon'])->name('apply.coupon');
-});
+    Route::post('/apply/charge', [ShippingChargeController::class, 'applyCharge'])->name('apply.charge');
+
+ });
 
 
 

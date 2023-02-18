@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ShippingCharge;
 use Illuminate\Http\Request;
+use App\Models\ShippingCharge;
+use Illuminate\Support\Facades\Session;
 
 class ShippingChargeController extends Controller
 {
@@ -25,6 +26,14 @@ class ShippingChargeController extends Controller
 
         return back()->with('success', 'Shipping address added');
     }
+
+    public function applyCharge(Request $request){
+        $shippingCharge=ShippingCharge::where('id', $request->location_id)->first();
+        Session::put('shipping_charge', $shippingCharge->charge);
+        return response()->json($shippingCharge);
+    }
+
+
 }
 
 
