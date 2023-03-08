@@ -15,7 +15,8 @@
                         <div class="woocommerce-info">Have a coupon? <a href="#" class="showcoupon">Click here to enter
                                 your code</a></div>
 
-                        <form name="checkout" method="post" class="checkout woocommerce-checkout" action="#">
+                        <form method="POST" class="checkout woocommerce-checkout needs-validation" action="{{ url('/pay') }}">
+                            @csrf
                             <div class="col2-set" id="customer_details">
                                 <div class="coll-1">
                                     <div class="woocommerce-billing-fields">
@@ -183,7 +184,7 @@
                                         <th>Total</th>
                                         <td><strong><span class="woocommerce-Price-amount amount"><span
                                                 class="woocommerce-Price-currencySymbol">$</span>
-                                              @if (Session::get('shipping_charge') && Session::get('coupon'))
+                                              @if (Session::has('shipping_charge') && Session::has('coupon'))
                                                 {{ $cart->sum('sub_total') + Session::get('shipping_charge') - Session::get('coupon')['amount'] }}
                                               @else
                                                 {{ $cart->sum('sub_total') + Session::get('shipping_charge') }}
@@ -209,36 +210,10 @@
                                                     / County, Store Postcode.</p>
                                             </div>
                                         </li>
-                                        <li class="wc_payment_method payment_method_paypal">
-                                            <input id="payment_method_paypal" type="radio" class="input-radio"
-                                                name="payment_method" value="paypal"
-                                                data-order_button_text="Proceed to PayPal" />
-                                            <!--grop add span for radio button style-->
-                                            <span class='grop-woo-radio-style'></span>
-                                            <!--custom change-->
-                                            <label for="payment_method_paypal">
-                                                PayPal <img src="assets/images/paypal.png"
-                                                    alt="PayPal Acceptance Mark" /><a href="#" class="about_paypal"
-                                                    title="What is PayPal?">What is PayPal?</a> </label>
-                                            <div class="payment_box payment_method_paypal" style="display:none;">
-                                                <p>Pay via PayPal; you can pay with your credit card if you don&#8217;t have
-                                                    a PayPal account.</p>
-                                            </div>
-                                        </li>
                                     </ul>
                                     <div class="form-row place-order">
-                                        <noscript>
-                                            Since your browser does not support JavaScript, or it is disabled, please ensure
-                                            you click the <em>Update Totals</em> button before placing your order. You may
-                                            be charged more than the amount stated above if you fail to do so.
-                                            <br />
-                                            <input type="submit" class="button alt"
-                                                name="woocommerce_checkout_update_totals" value="Update totals" />
-                                        </noscript>
-                                        <input type="submit" class="button alt" name="woocommerce_checkout_place_order"
-                                            id="place_order" value="Place order" data-value="Place order" />
-                                        <input type="hidden" id="_wpnonce5" name="_wpnonce" value="783c1934b0" />
-                                        <input type="hidden" name="_wp_http_referer" value="/wp/?page_id=6" />
+                                        
+                                        <button class="button alt" type="submit">Place Order</button>
                                     </div>
                                 </div>
                             </div>
@@ -252,4 +227,18 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('frontend/css/woocommerce-2.css') }}">
+@endsection
+
+@section('script')
+<script>
+    (function (window, document) {
+        var loader = function () {
+            var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+            script.src = "https://sandbox.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
+            tag.parentNode.insertBefore(script, tag);
+        };
+
+        window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+    })(window, document);
+</script>
 @endsection

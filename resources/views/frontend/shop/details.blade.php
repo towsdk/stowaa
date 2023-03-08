@@ -115,11 +115,13 @@
                            @csrf
                             <div class="quantity_wrap">
                                     <input type="hidden" name="inventory_id" id="inventory_id">
-                                    <input type="hidden" name="sub_total" id="sub_total" value=" @if ($product->sale_price)
+                                    <input type="hidden" name="sub_total" id="sub_total" value=" 
+                                    @if ($product->sale_price)
                                     {{ $product->sale_price }}
                                     @else
                                     {{ $product->price }}   
-                                    @endif"> 
+                                    @endif
+                                    "> 
                                     <div class="quantity_input">
                                         <button type="button" class="input_number_decrement">
                                             <i class="fal fa-minus"></i>

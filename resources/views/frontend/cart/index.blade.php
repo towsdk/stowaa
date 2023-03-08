@@ -40,7 +40,7 @@
                     <tbody>
                         @foreach ($carts as $cart)
                        
-                        <tr class="parent_row">
+                         <tr class="parent_row">
                             <td>
                                 <div class="cart_product">
                                     <img src="{{ asset('storage/product/'.$cart->inventory->product->image) }}" alt="image_not_found">
@@ -89,7 +89,7 @@
                                     <button type="submit" class="remove_btn"><i class="fal fa-trash-alt"></i></button>
                                 </form>
                             </td>
-                        </tr>  
+                         </tr>  
                         @endforeach
                         
                     </tbody>
@@ -146,16 +146,22 @@
                             <li>
                                 <span>Cart Subtotal</span>
                                 <span id="display_sub_total">
-                                    {{ $carts->sum('sub_total') }}
+                                    @if($cart->inventory->product->currency == 'BDT')
+                                      TK
+                                    @else
+                                      $
+                                    @endif
+                                    {{ $carts->sum('sub_total') }} 
+                                    {{-- There have some problem. Now i am skipping this --}}
                                 </span>
                             </li>
                             <li class="display_shipping_charge_list"></li>
                             @if (Session::has('coupon'))
                             <li>
-                                <span>Coupon ({{ Session::get('coupon')['couponName'] }})</span>
-                                <span> - {{ Session::get('coupon')['amount'] }}</span>
+                              <span>Coupon({{ Session::get('coupon')['couponName'] }})</span>
+                              <span>-{{ Session::get('coupon')['amount'] }}</span>
                             </li>
-                            @endif
+                          @endif
                             <li>
                                 <span>Order Total</span>
                                 <span class="total_price">$<strong class="order_total">

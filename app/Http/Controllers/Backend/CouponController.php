@@ -107,7 +107,7 @@ class CouponController extends Controller
         
         if($coupon->expiry_date < now()){
             return back()->with('warning', 'Coupon date expired');
-        }else if($carts->sum('sub_total') < (int) $coupon->limit){
+        }else if($carts->sum('sub_total') <= (int) $coupon->limit){
             return back()->with('warning', 'Cart not applicable for this amount');
         }else{
             $coupon = [
