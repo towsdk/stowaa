@@ -21,6 +21,7 @@
                                 <div class="coll-1">
                                     <div class="woocommerce-billing-fields">
                                         <h3>Billing Details</h3>
+                                        
                                         <p class="form-row form-row form-row-wide validate-required"
                                             id="billing_first_name_field">
                                             <label for="billing_first_name" class="">Name <abbr class="required"
@@ -41,7 +42,7 @@
                                             <label for="billing_phone" class="">Phone <abbr class="required"
                                                     title="required">*</abbr></label>
                                             <input type="tel" class="input-text " name="billing_phone"
-                                                id="billing_phone" placeholder="" autocomplete="tel" value="" />
+                                                id="billing_phone" placeholder="" autocomplete="tel" value="{{ auth()->user()->user_info->phone ?? ''}}" />
                                         </p>
                                         <div class="clear"></div>
                                        
@@ -51,7 +52,7 @@
                                                     title="required">*</abbr></label>
                                             <input type="text" class="input-text " name="billing_address_1"
                                                 id="billing_address_1" placeholder="Street address"
-                                                autocomplete="address-line1" value="" />
+                                                autocomplete="address-line1" value="{{ auth()->user()->user_info->address ?? ''}}" />
                                         </p>
                                         <p class="form-row form-row address-field validate-postcode validate-required form-row-first  woocommerce-invalid-required-field"
                                             id="billing_city_field">
@@ -59,72 +60,80 @@
                                                     title="required">*</abbr></label>
                                             <input type="text" class="input-text " name="billing_city"
                                                 id="billing_city" placeholder="" autocomplete="address-level2"
-                                                value="" />
+                                                value="{{ auth()->user()->user_info->city ?? ''}}" />
                                         </p>
                                         <p class="form-row form-row form-row-last address-field validate-required validate-postcode"
                                             id="billing_postcode_field">
                                             <label for="billing_postcode" class="">Postcode / ZIP <abbr
                                                     class="required" title="required">*</abbr></label>
-                                            <input type="text" class="input-text " name="billing_postcode8"
+                                            <input type="text" class="input-text " name="billing_postcode"
                                                 id="billing_postcode" placeholder="" autocomplete="postal-code"
-                                                value="" />
+                                                value="{{ auth()->user()->user_info->zip ?? ''}}" />
                                         </p>
                                         <div class="clear"></div>
                                         <p class="form-row form-row notes" id="order_comments_field">
                                             <label for="order_comments" class="">Order Notes</label>
-                                            <textarea name="order_comments" class="input-text " id="order_comments"
-                                                placeholder="Notes about your order, e.g. special notes for delivery." rows="2" cols="5"></textarea>
+                                            <textarea name="billing_notes" class="input-text " id="order_comments"
+                                                placeholder="Notes about your order, e.g. special notes for delivery." rows="2" cols="5">{{ auth()->user()->user_info->notes ?? ''}}</textarea>
                                         </p>
                                     </div>
                                 </div>
                                 <div class="coll-2">
                                     <div class="woocommerce-shipping-fields">
                                         <h3 id="ship-to-different-address">
-                                            <label for="ship-to-different-address-checkbox" class="checkbox">Ship to a
-                                                different address?</label>
-                                            <input id="ship-to-different-address-checkbox" class="input-checkbox"
-                                                type="checkbox" name="ship_to_different_address" value="1" />
-                                        </h3>
-                                        <div class="shipping_address">
+                                            <label class="checkbox" data-bs-toggle="collapse" data-bs-target="#display_shipping_address">Ship
+                                              to a different
+                                              address?
+                                              <input id="ship-to-different-address-checkbox" class="input-checkbox" type="checkbox"
+                                                name="ship_to_different_address" value="1" />
+                                            </label>
+                                          </h3>
+                                          <div class="shipping_address collapse" id="display_shipping_address">
+
                                             <div class="clear"></div>
                                             <p class="form-row form-row form-row-wide" id="shipping_company_field">
                                                 <label for="shipping_company" class=""> Name</label>
                                                 <input type="text" class="input-text " name="shipping_name"
-                                                    id="shipping_company" placeholder=""
+                                                    id="shipping_name" placeholder=""
                                                     value="" />
                                             </p>
                                             <p class="form-row form-row form-row-wide validate-required validate-phone"
-                                            id="billing_phone_field">
-                                            <label for="billing_phone" class="">Phone <abbr class="required"
+                                            id="shipping_phone_field">
+                                            <label for="shipping_phone2" class="">Phone <abbr class="required"
                                                     title="required">*</abbr></label>
-                                            <input type="tel" class="input-text " name="billing_phone"
+                                            <input type="tel" class="input-text " name="shipping_phone"
                                                  placeholder=""  value="" />
                                         </p>
                                             <p class="form-row form-row form-row-wide address-field validate-required"
                                                 id="shipping_address_1_field">
-                                                <label for="shipping_address_1" class="">Address <abbr
+                                                <label for="shipping_address_2" class="">Address <abbr
                                                         class="required" title="required">*</abbr></label>
-                                                <input type="text" class="input-text " name="shipping_address_1"
-                                                    id="shipping_address_1" placeholder="Street address"
+                                                <input type="text" class="input-text " name="shipping_address"
+                                                    id="shipping_address_2" placeholder="Street address"
                                                     autocomplete="address-line1" value="" />
                                             </p>
                                             <p class="form-row form-row address-field validate-postcode validate-required form-row-first  woocommerce-invalid-required-field"
-                                                id="billing_city_field2">
-                                                <label for="billing_city" class="">Town / City <abbr
+                                                id="shipping_city_field">
+                                                <label for="shipping_city" class="">Town / City <abbr
                                                         class="required" title="required">*</abbr></label>
-                                                <input type="text" class="input-text " name="billing_city"
+                                                <input type="text" class="input-text " name="shipping_city"
                                                     id="billing_city3" placeholder="" autocomplete="address-level2"
                                                     value="" />
                                             </p>
                                             <p class="form-row form-row form-row-last address-field validate-required validate-postcode"
-                                                id="billing_postcode_field17">
-                                                <label for="billing_postcode" class="">Postcode / ZIP <abbr
+                                                id="shipping_postcode_field17">
+                                                <label for="shipping_postcode2" class="">Postcode / ZIP <abbr
                                                         class="required" title="required">*</abbr></label>
-                                                <input type="text" class="input-text " name="billing_postcode"
-                                                    id="billing_postcode4" placeholder="" autocomplete="postal-code"
+                                                <input type="text" class="input-text " name="shipping_postcode"
+                                                    id="shipping_postcode" placeholder="" autocomplete="postal-code"
                                                     value="" />
                                             </p>
                                             <div class="clear"></div>
+                                            <p class="form-row form-row notes" id="shipping_notes_field">
+                                                <label for="shipping_notes" class="">Order Notes</label>
+                                                <textarea name="shipping_notes" class="input-text " id="shipping_notes"
+                                                    placeholder="Notes about your order, e.g. special notes for delivery." rows="2" cols="5"></textarea>
+                                            </p>
                                         </div>
                                         
                                     </div>
@@ -143,8 +152,8 @@
                                         @foreach ($carts as $cart)
                                         <tr class="cart_item">
                                             <td class="product-name">
-                                                {{ $cart->inventory->product->tit }} <strong class="product-quantity">
-                                                    {{ $cart->cart_quantity }}</strong>
+                                                {{ $cart->inventory->product->title }} <strong class="product-quantity">
+                                                   * {{ $cart->cart_quantity }}</strong>
                                             </td>
                                             <td class="product-total">
                                                 <span class="woocommerce-Price-amount amount"><span

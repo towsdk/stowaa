@@ -899,35 +899,35 @@
     /*------------------------------------------
         = woocommerce
     -------------------------------------------*/
-    if($(".checkout-section").length) {        
-        var showLogInBtn = $(".woocommerce-info > a");
-        var showCouponBtn = $(".showcoupon");
-        var shipDifferentAddressBtn = $("#ship-to-different-address");
-        var loginForm = $("form.login");
-        var couponForm = $(".checkout_coupon");
-        var shippingAddress = $(".shipping_address");
+    // if($(".checkout-section").length) {        
+    //     var showLogInBtn = $(".woocommerce-info > a");
+    //     var showCouponBtn = $(".showcoupon");
+    //     var shipDifferentAddressBtn = $("#ship-to-different-address");
+    //     var loginForm = $("form.login");
+    //     var couponForm = $(".checkout_coupon");
+    //     var shippingAddress = $(".shipping_address");
 
-        loginForm.hide();
-        couponForm.hide();
-        shippingAddress.hide();
+    //     loginForm.hide();
+    //     couponForm.hide();
+    //     shippingAddress.hide();
 
-        showLogInBtn.on("click", function(event) {
-            event.preventDefault();
-            loginForm.slideToggle();
-            event.stopPropagation();
-        });
+    //     showLogInBtn.on("click", function(event) {
+    //         event.preventDefault();
+    //         loginForm.slideToggle();
+    //         event.stopPropagation();
+    //     });
 
-        showCouponBtn.on("click", function(event2) {
-            event2.preventDefault();
-            couponForm.slideToggle();
-            event2.stopPropagation();
-        })
+    //     showCouponBtn.on("click", function(event2) {
+    //         event2.preventDefault();
+    //         couponForm.slideToggle();
+    //         event2.stopPropagation();
+    //     })
 
-        shipDifferentAddressBtn.on("click", function(event3) {
-            shippingAddress.slideToggle();
-            event3.stopPropagation();
-        })
-    }
+    //     shipDifferentAddressBtn.on("click", function(event3) {
+    //         shippingAddress.slideToggle();
+    //         event3.stopPropagation();
+    //     })
+    // }
 
 
 
