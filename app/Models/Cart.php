@@ -14,4 +14,9 @@ class Cart extends Model
     public function inventory(){
         return $this->belongsTo(Inventory::class);
     }
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
 }

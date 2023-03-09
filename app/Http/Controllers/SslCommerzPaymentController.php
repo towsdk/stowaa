@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Invoice;
 use App\Models\UserInfo;
+use App\Models\Inventory;
 use App\Models\ShippingInfo;
 use Illuminate\Http\Request;
 use App\Models\InventoryOrder;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Library\SslCommerz\SslCommerzNotification;
 
@@ -167,85 +171,113 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
-        echo "Transaction is Successful";
-
+    
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
-        $currency = $request->input('currency');
 
         $sslc = new SslCommerzNotification();
 
         #Check order status in order tabel against the transaction id or order id.
-        $order_details = DB::table('orders')
-            ->where('transaction_id', $tran_id)
-            ->select('transaction_id', 'status', 'currency', 'amount')->first();
+        $order_details = Order::where('transaction_id', $tran_id)
+            ->select('id', 'transaction_id', 'order_status', 'total', 'payment_status','created_at', 'coupon_name', 'coupon_amount', 'shipping_charge')->first();
+        $orderInventories = InventoryOrder::where('order_id', $order_details->id)->get();        
 
-        if ($order_details->status == 'Pending') {
-            $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
+        if ($order_details->order_status == 'Pending') {
+            $validation = $sslc->orderValidate($request->all(), $tran_id, $amount);
 
             if ($validation) {
-                /*
-                That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
-                in order table as Processing or Complete.
-                Here you can also sent sms or email for successfull transaction to customer
-                */
-                $update_product = DB::table('orders')
-                    ->where('transaction_id', $tran_id)
-                    ->update(['status' => 'Processing']);
 
-                echo "<br >Transaction is successfully Completed";
+                $order_details->update([
+                    'order_status' => 'Processing',
+                    'payment_status' => 'Paid'
+                ]);
+                
+                foreach ($orderInventories as $orderInventory) {
+                    Inventory::where('id', $orderInventory->inventory_id)->decrement('quantity',$orderInventory->order_quantity);
+
+                    Cart::where('inventory_id',$orderInventory->inventory_id)
+                    ->where('user_id', auth()->user()->id)->delete();
+                }
+                $request->session()->forget([ 'coupon', 'shipping_charge' ]);
+
+                $pdf = Pdf::loadView('invoice.orderinvoice', compact('order_details', 'orderInventories'));
+                $pdf->save(public_path('storage/invoice/'. $order_details->id."_invoice.pdf"));
+                $pdf_path= url('/') . '/storage/invoice/' . $order_details->id . "_invoice.pdf";
+                /* return $pdf->download('invoice.pdf'); */
+                Invoice::create([
+                    'order_id'=> $order_details->id,
+                    'invoice_path'=> $pdf_path ,
+                    'invoice'=> $order_details->id . "_invoice.pdf",
+                ]);
+
+                return redirect(route('frontend.shop.index'))->with('success', 'Transaction Successful!');
             }
-        } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
-            /*
-             That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
-             */
-            echo "Transaction is successfully Completed";
+        } else if ($order_details->order_status == 'Processing' || $order_details->order_status == 'Complete') {
+            return redirect(route('frontend.shop.index'))->with('success', 'Transaction Successful!');
         } else {
-            #That means something wrong happened. You can redirect customer to your product page.
-            echo "Invalid Transaction";
+
+            return back()->with('error', 'Invalid Transaction');
         }
 
-
+        
     }
 
     public function fail(Request $request)
     {
         $tran_id = $request->input('tran_id');
 
-        $order_details = DB::table('orders')
-            ->where('transaction_id', $tran_id)
-            ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
-        if ($order_details->status == 'Pending') {
-            $update_product = DB::table('orders')
-                ->where('transaction_id', $tran_id)
-                ->update(['status' => 'Failed']);
-            echo "Transaction is Falied";
-        } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
-            echo "Transaction is already Successful";
+        $order_details = Order::where('transaction_id', $tran_id)
+            ->select('id', 'transaction_id', 'order_status', 'total', 'payment_status')->first();
+
+
+        if ($order_details->order_status == 'Pending') {            
+
+                $order_details->update([
+                    'order_status' => 'Failed',
+                ]);
+                $request->session()->forget([
+                    'coupon', 'shipping_charge'
+                ]);
+                return redirect(route('frontend.shop.index'))->with('error', 'Transaction Failed!');
+            
+        } else if ($order_details->order_status == 'Processing' || $order_details->order_status == 'Complete') {
+            return redirect(route('frontend.shop.index'))->with('success', 'Transaction Successful!');
         } else {
-            echo "Transaction is Invalid";
+
+            return back()->with('error', 'Invalid Transaction');
         }
+
 
     }
 
     public function cancel(Request $request)
     {
         $tran_id = $request->input('tran_id');
+        $order_details = Order::where('transaction_id', $tran_id)
+            ->select('id', 'transaction_id', 'order_status', 'total', 'payment_status')->first();
 
-        $order_details = DB::table('orders')
-            ->where('transaction_id', $tran_id)
-            ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
-        if ($order_details->status == 'Pending') {
-            $update_product = DB::table('orders')
-                ->where('transaction_id', $tran_id)
-                ->update(['status' => 'Canceled']);
-            echo "Transaction is Cancel";
-        } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
-            echo "Transaction is already Successful";
+        if ($order_details->order_status == 'Pending') {
+
+
+
+            $order_details->update([
+                'order_status' => 'Canceled',
+            ]);
+            $order_details = Order::where('transaction_id', $tran_id)->first();
+            InventoryOrder::where('order_id', $order_details->id)->delete();
+            $order_details->delete();
+            
+            $request->session()->forget([
+                'coupon', 'shipping_charge'
+            ]);
+            return redirect(route('frontend.shop.index'))->with('error', 'Transaction Canceled!');
+        } else if ($order_details->order_status == 'Processing' || $order_details->order_status == 'Complete') {
+            return redirect(route('frontend.shop.index'))->with('success', 'Transaction Successful!');
         } else {
-            echo "Transaction is Invalid";
+
+            return back()->with('error', 'Invalid Transaction');
         }
 
 
@@ -253,44 +285,44 @@ class SslCommerzPaymentController extends Controller
 
     public function ipn(Request $request)
     {
-        #Received all the payement information from the gateway
-        if ($request->input('tran_id')) #Check transation id is posted or not.
-        {
+        $tran_id = $request->input('tran_id');
+        $amount = $request->input('amount');
 
-            $tran_id = $request->input('tran_id');
+        $sslc = new SslCommerzNotification();
 
-            #Check order status in order tabel against the transaction id or order id.
-            $order_details = DB::table('orders')
-                ->where('transaction_id', $tran_id)
-                ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
-            if ($order_details->status == 'Pending') {
-                $sslc = new SslCommerzNotification();
-                $validation = $sslc->orderValidate($request->all(), $tran_id, $order_details->amount, $order_details->currency);
-                if ($validation == TRUE) {
-                    /*
-                    That means IPN worked. Here you need to update order status
-                    in order table as Processing or Complete.
-                    Here you can also sent sms or email for successful transaction to customer
-                    */
-                    $update_product = DB::table('orders')
-                        ->where('transaction_id', $tran_id)
-                        ->update(['status' => 'Processing']);
+        $order_details = Order::where('transaction_id', $tran_id)
+            ->select('id', 'transaction_id', 'order_status', 'total', 'payment_status')->first();
+        $orderInventories = InventoryOrder::where('order_id', $order_details->id)->get();
 
-                    echo "Transaction is successfully Completed";
+
+        if ($order_details->order_status == 'Pending') {
+            $validation = $sslc->orderValidate($request->all(), $tran_id, $amount);
+
+            if ($validation) {
+
+                $order_details->update([
+                    'order_status' => 'Processing',
+                    'payment_status' => 'Paid'
+                ]);
+
+                foreach ($orderInventories as $orderInventory) {
+                    Inventory::where('id', $orderInventory->inventory_id)->decrement('quantity', $orderInventory->order_quantity);
+
+                    Cart::where('inventory_id', $orderInventory->inventory_id)
+                        ->where('user_id', Auth::user()->id)
+                        ->delete();
                 }
-            } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
-
-                #That means Order status already updated. No need to udate database.
-
-                echo "Transaction is already successfully Completed";
-            } else {
-                #That means something wrong happened. You can redirect customer to your product page.
-
-                echo "Invalid Transaction";
+                $request->session()->forget([
+                    'coupon', 'shipping_charge'
+                ]);
+                return redirect(route('frontend.shop.index'))->with('success', 'Transaction Successful!');
             }
+        } else if ($order_details->order_status == 'Processing' || $order_details->order_status == 'Complete') {
+            return redirect(route('frontend.shop.index'))->with('success', 'Transaction Successful!');
         } else {
-            echo "Invalid Data";
+
+            return back()->with('error', 'Invalid Transaction');
         }
     }
 
