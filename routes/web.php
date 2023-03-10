@@ -16,6 +16,7 @@ use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\InventoryController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\UserAuth\UserAuthController;
@@ -51,7 +52,7 @@ Route::name('frontend.')->group(function(){
         
     });
 
-    Route::controller(Cartcontroller::class)->prefix('cart')->name('cart.')->group(function(){
+    Route::controller(Cartcontroller::class)->middleware(['auth','verified'])->prefix('cart')->name('cart.')->group(function(){
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');    
         Route::post('/update', 'update')->name('update');
@@ -166,6 +167,11 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
         Route::put('/{ShippingCharge}/update','update')->name('update');
         Route::delete('/{ShippingCharge}/delete','destroy')->name('destroy');
 
+    });
+
+    Route::controller(OrderController::class)->prefix('order')->name('order.')->group(function(){
+        Route::get('/','index')->name('index');
+        Route::get('/show','show')->name('show');
     });
 
 });

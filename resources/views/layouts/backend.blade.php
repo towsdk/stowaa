@@ -166,10 +166,18 @@
                         <div class="sidebar sidebar-light sidebar-left sidebar-p-t" data-perfect-scrollbar>
                             <div class="sidebar-heading">Menu</div>
                             <ul class="sidebar-menu">
-                                <li class="sidebar-menu-item ">
-                                    <a class="sidebar-menu-button" data-toggle="collapse" href="{{ route('backend.home') }}">
+
+                                <li class="sidebar-menu-item {{  Route::is('backend.home') ? 'active' : ''  }}">
+                                    <a class="sidebar-menu-button"  href="{{ route('backend.home') }}">
                                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
                                         <span class="sidebar-menu-text">Dashboards</span>
+                                      </a>
+                                </li>
+
+                                <li class="sidebar-menu-item {{ Route::is('backend.order.index') ? 'active': ''}}">
+                                    <a class="sidebar-menu-button"  href="{{ route('backend.order.index') }}">
+                                        <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
+                                        <span class="sidebar-menu-text">Orders</span>
                                       </a>
                                 </li>
 

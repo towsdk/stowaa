@@ -13,8 +13,10 @@ use App\Models\InventoryOrder;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Library\SslCommerz\SslCommerzNotification;
+use App\Mail\InvoiceOrder;
 
 class SslCommerzPaymentController extends Controller
 {
@@ -209,6 +211,8 @@ class SslCommerzPaymentController extends Controller
                     'invoice_path'=> $pdf_path ,
                     'invoice'=> $order_details->id . "_invoice.pdf",
                 ]);
+
+                Mail::to(auth()->user()->email)->send(new InvoiceOrder($order_details));
 
                 return redirect(route('frontend.shop.index'))->with('success', 'Transaction Successful!');
             }
