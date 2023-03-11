@@ -171,18 +171,13 @@
                                 <div class="collapse {{ Route::is('frontend.home') ? 'show' : '' }}" id="allcategories_collapse">
                                     <div class="card card-body">
                                         <ul class="allcategories_list ul_li_block">
-                                            <li><a href="shop_grid.html"><i class="icon icon-Starship"></i> New Arrival Products</a></li>
-                                            <li><a href="shop_list.html"><i class="icon icon-WorldWide"></i> Most Popular Products</a></li>
-                                            <li><a href="shop_grid.html"><i class="icon icon-Star"></i> Deals of the day</a></li>
-                                            <li><a href="shop_list.html"><i class="icon icon-Phone"></i> Mobile Accessories</a></li>
-                                            <li><a href="shop_grid.html"><i class="icon icon-DesktopMonitor"></i> Computer Accessories</a></li>
-                                            <li><a href="shop_list.html"><i class="icon icon-Bulb"></i> Consumer Electronics</a></li>
-                                            <li><a href="shop_grid.html"><i class="icon icon-Car"></i> Automobiles & Motorcycles</a></li>
-                                            <li><a href="shop_list.html"><i class="icon icon-Phone"></i> Mobile Accessories</a></li>
-                                            <li><a href="shop_grid.html"><i class="icon icon-DesktopMonitor"></i> Computer Accessories</a></li>
-                                            <li><a href="shop_list.html"><i class="icon icon-Bulb"></i> Consumer Electronics</a></li>
-                                            <li><a href="shop_grid.html"><i class="icon icon-Car"></i> Automobiles & Motorcycles</a></li>
-                                        </ul>
+                                            @foreach ($categories->take(5) as $category)
+                                            <li>
+                                                <a href=""><i class="icon icon-Starship"></i> 
+                                                    {{ $category->name }}</a>
+                                            </li>
+                                            @endforeach
+                                            </ul>
                                     </div>
                                 </div>
                             </div>

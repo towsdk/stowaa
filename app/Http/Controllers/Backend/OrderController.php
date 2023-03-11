@@ -42,9 +42,8 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        return $order;
-        $singleOrder = Order::where('id', $order->id)->with('inventory_orders.inventory.product')->get();
-       return $singleOrder;
+       $singleOrder = Order::where('id', $order->id)->with('inventory_orders.inventory.product', 'inventory_orders.inventory.color', 'inventory_orders.inventory.size')->first();
+    //    return $singleOrder;
         return view('backend.order.show',compact('singleOrder'));
     }
 }

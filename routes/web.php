@@ -171,7 +171,7 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
 
     Route::controller(OrderController::class)->prefix('order')->name('order.')->group(function(){
         Route::get('/','index')->name('index');
-        Route::get('/show','show')->name('show');
+        Route::get('/{order}/show','show')->name('show');
     });
 
 });
