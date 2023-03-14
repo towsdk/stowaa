@@ -56,10 +56,15 @@ class InvoiceOrder extends Mailable
      *
      * @return array
      */
-    // public function attachments()
-    // {
-    //     return [
-    //         Attachment::fromStorage( 'invoice/' . $this->order->invoice->invoice )->as('invoice.pdf')->withMime('application/pdf'),
-    //     ];
-    // }
+    public function attachments()
+    {
+        return [
+
+            Attachment::fromPath(public_path('storage/invoice/'). $this->order->invoice->invoice)
+                ->as('invoice.pdf')
+                ->withMime('application/pdf'),
+            
+            // Attachment::fromStorage( 'invoice/' . $this->order->invoice->invoice )->as('invoice.pdf')->withMime('application/pdf'),
+        ];
+    }
 }
