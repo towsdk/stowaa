@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\Category;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,5 +32,11 @@ class AppServiceProvider extends ServiceProvider
         $categories = Category::where('status', 1)->where('parent_id', NULL)->get(['id', 'name', 'slug']);
 
         view()->share('categories', $categories);
+
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('super-admin') ? true : null;
+        });
     }
+
+   
 }

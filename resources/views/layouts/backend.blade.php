@@ -173,6 +173,9 @@
                                         <span class="sidebar-menu-text">Dashboards</span>
                                       </a>
                                 </li>
+                                
+                                @role('super-admin|admin')
+                                
 
                                 <li class="sidebar-menu-item {{ Route::is('backend.order.index') ? 'active': ''}}">
                                     <a class="sidebar-menu-button"  href="{{ route('backend.order.index') }}">
@@ -220,9 +223,25 @@
                                         </li>
                                     
                                     </ul>
+                                   
+                                </li>
+                                <li class="sidebar-menu-item {{Route::is('backend.coupon.*') ? 'active' : '' }}">
+                                    <a class="sidebar-menu-button" href="{{route('backend.coupon.index')}}">
+                                        <i
+                                            class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>
+                                        <span class="sidebar-menu-text">Coupon</span>
+                                    </a>
                                 </li>
 
+                                <li class="sidebar-menu-item {{Route::is('backend.shipping.charge.*') ? 'active' : '' }}">
+                                    <a class="sidebar-menu-button" href="{{ route('backend.shipping.charge.index')}}">
+                                        <i
+                                            class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>
+                                        <span class="sidebar-menu-text">Shipping Charge</span>
+                                    </a>
+                                </li>
  
+                                @endrole
 
                                 @canany(['see role', 'create role'])
                                 <li class="sidebar-menu-item {{ Route::is('backend.role*') ? 'active open': '' }} ">
@@ -252,21 +271,7 @@
                                 </li> 
                                 @endcanany
 
-                                <li class="sidebar-menu-item {{Route::is('backend.coupon.*') ? 'active' : '' }}">
-                                    <a class="sidebar-menu-button" href="{{route('backend.coupon.index')}}">
-                                        <i
-                                            class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>
-                                        <span class="sidebar-menu-text">Coupon</span>
-                                    </a>
-                                </li>
-
-                                <li class="sidebar-menu-item {{Route::is('backend.shipping.charge.*') ? 'active' : '' }}">
-                                    <a class="sidebar-menu-button" href="{{ route('backend.shipping.charge.index')}}">
-                                        <i
-                                            class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>
-                                        <span class="sidebar-menu-text">Shipping Charge</span>
-                                    </a>
-                                </li>
+                                
 
                                 <li class="sidebar-menu-item">
                                     <a class="sidebar-menu-button" data-toggle="collapse" href="#apps_menu">

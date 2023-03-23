@@ -215,7 +215,7 @@
                                             <ul class="submenu dropdown-menu" aria-labelledby="pages_submenu">
                                                 <li><a href="about.html">About Us</a></li>
                                                 <li><a href="team.html">Team</a></li>
-                                                <li><a href="account.html">My Account</a></li>
+                                                <li><a href="{{ route('user.dsahboard') }}">My Account</a></li>
                                                 <li><a href="register.html">Register</a></li>
                                                 <li class="dropdown">
                                                     <a href="#" id="cart_submenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shopping Cart</a>
