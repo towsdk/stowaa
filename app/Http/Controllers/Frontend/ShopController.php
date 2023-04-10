@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Color;
 use App\Models\Inventory;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -15,13 +16,29 @@ class ShopController extends Controller
         return view('frontend.shop.index', compact('products'));
     }
     public function shopDetails($slug){
-        $product = Product::with('galleries', 'inventories.size', 'inventories.color')->where('slug', $slug)->firstOrfail();
-       
+        $product = Product::with('galleries', 'inventories.size')->where('slug', $slug)->firstOrfail();
+        
         $size = Inventory::where('product_id', $product->id)->get();
         $sizeOf = $size->unique(function($item){
             return $item['size_id'];
         });
-        return view('frontend.shop.details', compact('product','sizeOf'));
+
+        $user_order_check = [];
+        
+        // return auth()->user()->orders;
+        $user = User::where('id', auth()->user()->id)->with(['orders' => function($q){
+            $q->with('inventory_orders.inventory');
+        }])->first();
+
+        // return $user;
+
+        foreach($user->orders as $order){
+            $user_order_check = array_merge($user_order_check, $order->inventory_orders->pluck('product_id')->toArray());
+        }
+       
+        // return $user_order_check;
+        $user_order_check = array_unique($user_order_check);
+        return view('frontend.shop.details', compact('product','sizeOf', 'user_order_check'));
     }
     public function shopColor(Request $request){
         $inventories = Inventory::where('product_id', $request->product_id)->where('size_id', $request->size_id)->get();

@@ -359,12 +359,21 @@
                             </div>
                         </div>
 
+                        @php
+                            print_r($user_order_check);
+                            // echo $product->id;
+
+                            
+                        @endphp
+                        
+                        @if (Auth::check() && in_array($product->id,$user_order_check) )
                         <div class="customer_review_form">
                             <h4 class="reviews_tab_title">Add a review</h4>
                             <p>
                             Your email address will not be published. Required fields are marked *
                             </p>
-                            <form action="#">
+                            <form action="#" method="POST">
+                                @csrf
                                 <div class="your_ratings">
                                     <h5>Your Ratings:</h5>
                                     
@@ -408,6 +417,8 @@
                                 <button type="submit" class="btn btn_primary">Submit Now</button>
                             </form>
                         </div>
+                        @endif
+
                     </div>
                 </div>
             </div>

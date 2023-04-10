@@ -30,6 +30,7 @@
                         <th>Name</th>
                         <th>Permission </th>
                         <th>Action </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -44,6 +45,15 @@
                         </td>
                         <td>
                             <a href="{{ route('backend.role.edit', $role->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                        
+                            <a href="{{ route('backend.role.edit', $role->id) }}" class="btn btn-sm btn-success">view</a>
+                      
+                            
+                            <form action="{{route('backend.role.delete', $role->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr> 
                     @endforeach

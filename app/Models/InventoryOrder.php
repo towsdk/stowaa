@@ -14,4 +14,12 @@ class InventoryOrder extends Model
     {
         return $this->belongsTo(Inventory::class);
     }
+
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
+
+    public function product(){
+        return $this->hasMany(Product::class);
+    }
 }

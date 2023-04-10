@@ -21,6 +21,7 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\UserAuth\UserAuthController;
 use App\Http\Controllers\Backend\RolePermissionController;
+use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\UserDashboardController;
 
 /*
@@ -69,7 +70,8 @@ Route::name('frontend.')->group(function(){
 
     Route::prefix('user')->name('user.')->middleware(['auth', 'role:user'])->group(function(){
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dsahboard');
-        Route::get('/dashboard/orders', [UserDashboardController::class, 'userOrder'])->name('orders');  
+        Route::get('/dashboard/orders', [UserDashboardController::class, 'userOrder'])->name('orders'); 
+        Route::get('/dashboard/orders/invoice/{id}', [UserDashboardController::class, 'downloadInvoice'])->name('order.invoice'); 
     });
 
 //backend routes
@@ -81,6 +83,17 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
      Route::controller(CategoryController::class)->prefix('category')->name('category.')->group(function(){
         Route::get('/','index')->name('index');
         Route::post('/','store')->name('store');
+        Route::get('/{category}/show','show')->name('show');
+        Route::get('/{category}/edit','edit')->name('edit');
+        Route::put('/{category}/update','update')->name('update');
+        Route::delete('/{category}/delete','destroy')->name('destroy');
+
+    });
+         // usercontroller route
+     Route::controller(UserController::class)->prefix('user')->name('user.')->group(function(){
+        Route::get('/','index')->name('index');
+        Route::get('/create','create')->name('create');
+        Route::post('/store','store')->name('store');
         Route::get('/{category}/show','show')->name('show');
         Route::get('/{category}/edit','edit')->name('edit');
         Route::put('/{category}/update','update')->name('update');
@@ -174,6 +187,7 @@ Route::prefix('dashboard')->name('backend.')->group(function(){
     Route::post('/store', 'roleStore')->name('store')->middleware(['role_or_permission:super-admin|create role']);
     Route::get('/edit/{id}', 'editRole')->name('edit')->middleware(['role_or_permission:super-admin|edit role']);
     Route::post('/update/{id}', 'roleUpdate')->name('update')->middleware(['role_or_permission:super-admin|edit role']);
+    Route::delete('/{role}/delete', 'roldeDelete')->name('delete')->middleware(['role_or_permission:super-admin|delete user']);
 
     //permission create route
     Route::post('/permission/store',  'permissionStore')->name('permission.store');

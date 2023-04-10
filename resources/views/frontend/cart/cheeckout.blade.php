@@ -139,6 +139,9 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- @foreach ($products as $product)
+                                <h2>{{ $product->id }}
+                            @endforeach --}}
                             <h3 id="order_review_heading">Your order</h3>
                             <div id="order_review" class="woocommerce-checkout-review-order">
                                 <table class="shop_table woocommerce-checkout-review-order-table">

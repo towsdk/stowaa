@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Inventory;
+use App\Models\Product;
 use App\Models\ShippingCharge;
 use Illuminate\Http\Request;
 
@@ -120,6 +121,7 @@ class Cartcontroller extends Controller
 
     public function cheeckoutView(){
         $carts=Cart::where('user_id',auth()->user()->id)->get();
-        return view('frontend.cart.cheeckout', compact('carts'));
+        $products= Product::all();
+        return view('frontend.cart.cheeckout', compact('carts', 'products'));
     }
 }

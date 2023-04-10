@@ -81,7 +81,7 @@
                                         <div class="flug_wrap">
                                             <img src="{{ asset('frontend/images/flug/flug_uk.png')}}" alt="image_not_found">
                                         </div>
-                                        <select>
+                                        <select class="nice_select">
                                             <option data-display="Select Option">Select Your Language</option>
                                             <option value="1" selected>English</option>
                                             <option value="2">Bangla</option>
